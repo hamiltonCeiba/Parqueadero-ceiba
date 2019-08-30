@@ -3,19 +3,19 @@ pipeline {
 		 agent {
 			 label 'Slave_Induccion'
 		 }
-		 //Opciones especÃ­ficas de Pipeline dentro del Pipeline
+		 //Opciones especificas de Pipeline dentro del Pipeline
 		 options {
-			//Mantener artefactos y salida de consola para el # especÃ­fico de ejecuciones recientes del Pipeline.
+			//Mantener artefactos y salida de consola para el # especifico de ejecuciones recientes del Pipeline.
 			buildDiscarder(logRotator(numToKeepStr: '3'))
 			//No permitir ejecuciones concurrentes de Pipeline
 			disableConcurrentBuilds()
 		 }
-		 //Una secciÃ³n que define las herramientas para â€œautoinstalarâ€� y poner en la PATH
+		 //Una secci�n que define las herramientas para autoinstalar y poner en la PATH
 		 tools {
-			 jdk 'JDK8_Centos' //Preinstalada en la ConfiguraciÃ³n del Master
-			 gradle 'Gradle4.5_Centos' //Preinstalada en la ConfiguraciÃ³n del Master
+			 jdk 'JDK8_Centos' //Preinstalada en la Configuracion del Master
+			 gradle 'Gradle4.5_Centos' //Preinstalada en la Configuracion del Master
 		 }
-		 //AquÃ­ comienzan los â€œitemsâ€� del Pipeline
+		 //Aqui comienzan los items del Pipeline
 		 stages{
 			stage('Checkout'){
 				steps{
@@ -42,10 +42,9 @@ pipeline {
 			 }
 			 stage('Static Code Analysis') {
 				 steps{
-				 echo '------------>AnÃ¡lisis de cÃ³digo estÃ¡tico<------------'
+				 echo '------------>Analisis de codigo estatico<------------'
 				 withSonarQubeEnv('Sonar') {
-					sh "${tool name: 'SonarScanner',
-					type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner
+					sh "${tool name: 'SonarScanner',type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner
 					-Dproject.settings=sonar-project.properties"
 				 }
 			 }
@@ -53,7 +52,7 @@ pipeline {
 		 stage('Build') {
 			 steps {
 			 	echo "------------>Build<------------"
-			 	//Construir sin tarea test que se ejecutó previamente
+			 	//Construir sin tarea test que se ejecutara previamente
 				sh 'gradle --b ./build.gradle build -x test'
 			 
 			 }
